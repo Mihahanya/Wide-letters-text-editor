@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Растянутые буквы</title>
+    <style>
+        .container {
+            width: 600px;
+            margin: 20px auto;
+        }
+        
+        #editor {
+            width: 100%;
+            height: 300px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 1.2em;
+            border: 1px solid #ccc;
+        }
+        
+        #output {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+            font-size: 1.2em;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            background: #f9f9f9;
+        }
+        
+        .stretched {
+            display: inline-block;
+            position: relative;
+            vertical-align: top;
+            overflow: visible;
+            height: 1.2em;
+        }
+        
+        .stretched::before {
+            content: var(--char);
+            position: absolute;
+            left: 0;
+            transform: scaleX(var(--len));
+            transform-origin: left;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <textarea id="editor" placeholder="Введите текст...">heeeeeeeello</textarea>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const output = document.getElementById('output');
+        
+        function processText(text) {
+            return text.replace(/(.)\1*/g, (match, char) => {
+                if (match.length === 1) return char;
+                return `<span class="stretched" 
+                          style="--len: ${match.length}; 
+                                 --char: '${char.replace(/'/g, "\\'")}';
+                                 width: calc(${match.length} * 0.5em);
+                                 margin-left: calc(${match.length} * -0.03em);
+                                 margin-right: calc(${match.length} * -0.015em);
+                                 ">
+                      </span>`;
+            });
+        }
+        output.innerHTML = processText(editor.value);
+        
+        editor.addEventListener('input', () => {
+            output.innerHTML = processText(editor.value);
+        });
+    </script>
+</body>
+</html>
