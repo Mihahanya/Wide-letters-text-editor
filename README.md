@@ -3,4 +3,4 @@
 
 Try [here!](https://mihahanya.github.io/Wide-letters-text-editor/)
 
-![](./Снимок экрана 2025-03-09 2358043.png)
+![](./screenshot.png)
